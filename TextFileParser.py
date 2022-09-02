@@ -4,6 +4,33 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+
+#The JSONs should have the Following Structure
+#Each JSON defines a Thermal Vaccum Chamber Test known as a Run
+#Each Run is composed of a number of Profiles Sometimes one Sometimes many
+#RunName -- Tha name of the Run
+#UseChaser -- Should we use the Chasing algorythim to chase the temperature to the setpoint
+#ChosenRTD -- Which RTD are We tracking
+#ThermalMass -- What is the Thermal Mass of the Object you are Testing
+#StartingPoint -- This is the Starting temperature of the Chamber
+#EndingPoint -- This is the last temp point
+#Profiles -- This is a list of Profiles
+
+#Each Profile is composed of a number of Setpoints
+#Each Profile has the Following Parameters
+#Profile TempProfileName -- name of the profile
+#Profile Rrepititions -- How many times to repeat the profile
+#Profile Setpoints -- A list of Setpoints
+
+#Each Setpoint has the Following parameters
+#Setpoint name - The name of the Setpoint
+#Setpoint Temp   - The Temperature the Chamber is set to
+#Setpoint Hold   - Howlong the Chamber is set to the Setpoint Temp
+#Setpoint RampRate - The Rate the Chamber is ramping up or down to the Setpoint Temp ie 1 C/min
+
+
+#Reads a Json File and creates an object from it
 class RunReader:
     def __init__(self, FileName):
         self.FileName = FileName
@@ -18,26 +45,31 @@ class RunReader:
         self.getProfiles()
         
         self.getPlot()
-
+    #read the parameter in the JSON File and returns it
     def readParameter(self, ParameterName):
         return self.data[ParameterName]
-    
+
+    #read in the entire JSON File and place it into data variable
     def readData(self):
         f = open(self.FileName, "r")
         data = json.loads(f.read())
         f.close()
         return data
     
+    #This will generate the Profile Objects from the JSON File
     def getProfiles(self):
         profiles = self.data["Profiles"]
         for profile in profiles:
             self.Profiles.append(Profile(profile))
 
+    #This will build a plot from all the Data to ensure to the enduser that the data is correct
+    #it should always be called last
     def getPlot(self):
         array = []
 
-        
+        #Go through Every Profile break it down
         for x in range(len(self.Profiles)):
+            #If the Profile is repeated
             for i in range(self.Profiles[x].Repititions):
                 for j in range(len(self.Profiles[x].SetPoints)):
                     #Exceptions for Determining the Starting Temperature
@@ -93,7 +125,7 @@ class RunReader:
 
                     
 
-
+#Subclass Utilized by RunReader to Read Profiles
 class Profile:
     def __init__(self, data):
         self.data = data
@@ -110,6 +142,8 @@ class Profile:
         for setpoint in setpoints:
             self.SetPoints.append(SetPoint(setpoint))
 
+
+#Subclass used by Profile to Read SetPoints
 class SetPoint:
     def __init__(self, data):
         print(data)
@@ -120,7 +154,13 @@ class SetPoint:
         self.RampRate = self.readParameter("Ramp Rate To Temp [C/Min]")
 
     def readParameter(self, ParameterName):
-        return self.data[ParameterName]
+        try:
+            return self.data[ParameterName]
+        except KeyError:
+
+        waring = f"{ParameterName} not found in {self.data}"
+        self.data[ParameterName]
+        return 
 
 
 run = RunReader("Example.json")
