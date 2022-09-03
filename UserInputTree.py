@@ -1,6 +1,23 @@
+import TextFileParser
+import os
 
+#Get the User Input for all the parameters we need
+def GetUserInputFile():
+    PieceWiseProfile = None
 
-def GetUserInput():
+    while PieceWiseProfile == None:
+        PieceWiseProfile = input("Enter the Piecewise Linear Profile Filename and location: ")
+        #Check to see if the input is a valid filepath
+        if os.path.isfile(PieceWiseProfile):
+            PieceWiseProfile = LoadPieceWiseProfile(PieceWiseProfile)
+        else:
+            PieceWiseProfile = None
+            print("Invalid Input")
+
+    return PieceWiseProfile
+
+#Have the User inpuyt the information manually from the command line
+def GetUserInputManual():
     StartingTemperature = None
     RampDownRate = None
     LowTemperature = None
@@ -15,12 +32,11 @@ def GetUserInput():
     UseChaser = False
     SetPointTolerance = 0.1
     ThermalMass = "Small"
-
-
     while (StartingTemperature == None):
         x = input("What is the starting temperature [C]?\n")
         try: StartingTemperature = float(x)
         except: pass
+    
     while (RampDownRate  == None):
         x = input("What cooling rate do you want [C/min]?\n")
         try: RampDownRate = float(x)
@@ -112,3 +128,26 @@ def GetUserInput():
             except:
                 pass
     return StartingTemperature, RampDownRate, LowTemperature, WarmTemperature, DwellColdTime, RampUpRate,DwellWarmTime,Repetitions,UseChaser,UseExtendedOptions,ChosenRTD,UseChaser,SetPointTolerance,ThermalMass
+
+
+
+#load a piecewise profile from a json file using the TextFileParser
+def LoadPieceWiseProfile(FileName):
+    Data = TextFileParser.runReader(FileName)
+    return Data
+
+
+#Branch User Input to GetUserInputManual or GetUserInputFile
+def GetUserInput():
+    UseFile = None
+    while UseFile == None:
+        UseFile = input("Would you like to use a File to input the Temperature Profile? (y/n): ")
+        if UseFile == "y":
+            UseFile = True
+        elif UseFile == "n":
+            UseFile = False
+        else:
+            UseFile = None
+            print("Invalid Input")
+    
+    return UseFile

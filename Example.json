@@ -5,6 +5,7 @@
     "ThermalMass": "Small",
     "StartingPoint": "Ambient",
     "EndingPoint": "Ambient",
+    "SetPointTolerance": 0.1,
     "Profiles": [
         {  
         "TempProfileName": "Survival Temps",

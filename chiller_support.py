@@ -1,7 +1,13 @@
+#This is the Chiller Class Used to interface With the Chiller
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 import pymodbus.exceptions
 from tvac_logger import logger
 import time
+
+#Definitions for the Upper and lower capibilities of the chiller
+chillerUpperLimit = 25 #Degrees C
+chillerLowerLimit = -30 #Degrees C
+
 class chiller:
 
     def __init__(self):

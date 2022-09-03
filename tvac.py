@@ -35,8 +35,8 @@ class tvac:
 
 
         #Limits for Temp
-        self._LowerLimit = -60
-        self._UpperLimit = 30
+        self._LowerLimit = chiller_support.ChillerLowerLimit
+        self._UpperLimit = chiller_support.ChillerUpperLimit
         #Set up the parameters for our TVAC run
         self._TargetTempSensor = TargetSensor
         self._TargetTemperature = False
@@ -85,6 +85,7 @@ class tvac:
 
         
         #This will poll the Data Stream
+        #partial is used to pass in the function to call and the channel to call it on
         self.TemperatureDataStreamDict = {
             'Chiller': self._DataChillerTemperature,
             'Plate1': partial(self.Extract,self._DataRTDsTemperature, 3),
@@ -151,6 +152,7 @@ class tvac:
         plt.savefig(self.PNGFile)
 
     #Log Temperature in the CSV File
+    #This will Go through and Pull all the data from the Data Streams and log it to the CSV
     def LogTemperature(self):
         """Writes temperature and target values to a CSV file."""
         DataTime = (time.time() - self.ExecStartTime) / 60
