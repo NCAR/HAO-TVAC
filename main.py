@@ -27,6 +27,8 @@ import TextFileParser
 
 if __name__ == "__main__":
     #import the Chiller and the RTDs
+    print("Requesting User Input")
+    
     Chiller = chiller()
     rtd = rtd()
     
@@ -58,15 +60,15 @@ if __name__ == "__main__":
         piecewise = GetUserInputFile()
         #Setup the TVAC Using the Parameters From the TextFileParser
         tvac = tvac(RTD=rtd, Chiller=Chiller, TargetSensor=piecewise.ChosenRTD, ThermalMass=piecewise.ThermalMass)
-        tvac.Target = piecewise.StartingTemperature
+        tvac.Target = piecewise.StartingPoint
         tvac.WaitForTemperature(useDumbChaser=piecewise.UseChaser)
-        for i in range(piecewise.Profiles):
-            print(f"Starting Profile {piecewise.Profiles[i].Name}")
-            for j in range(piecewise.Profiles[i].Repetitions):
+        for i in range(len(piecewise.Profiles)):
+            print(f"Starting Profile {piecewise.Profiles[i].ProfileName}")
+            for j in range(piecewise.Profiles[i].Repititions):
                 print(f"Starting Repition {j}")
-                for k in range(piecewise.Profiles[i].SetPoints):
-                    print(f"Setting Temperature to {piecewise.Profiles[i].SetPoints[k].Temperature}")
-                    tvac.RampTemperatureTo(TargetTemperature=piecewise.Profiles[i].SetPoints[k].Temperature ,RampRate=piecewise.Profiles[i].SetPoints[k].RampRate, tolerance=piecewise.SetPointTolerance, UseDumbChaser=piecewise.UseChaser)
+                for k in range(len(piecewise.Profiles[i].SetPoints)):
+                    print(f"Setting Temperature to {piecewise.Profiles[i].SetPoints[k].Temp}")
+                    tvac.RampTemperatureTo(TargetTemperature=piecewise.Profiles[i].SetPoints[k].Temp ,RampRate=piecewise.Profiles[i].SetPoints[k].RampRate, tolerance=piecewise.setPointTolerance, UseDumbChaser=piecewise.UseChaser)
                     print("Waiting")
                     tvac.Wait(duration = piecewise.Profiles[i].SetPoints[k].Hold, useDumbChaser=piecewise.UseChaser)
     print("Done")

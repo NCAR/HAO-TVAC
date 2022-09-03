@@ -35,8 +35,8 @@ class tvac:
 
 
         #Limits for Temp
-        self._LowerLimit = chiller_support.ChillerLowerLimit
-        self._UpperLimit = chiller_support.ChillerUpperLimit
+        self._LowerLimit = chiller_support.chillerLowerLimit
+        self._UpperLimit = chiller_support.chillerUpperLimit
         #Set up the parameters for our TVAC run
         self._TargetTempSensor = TargetSensor
         self._TargetTemperature = False
@@ -219,9 +219,16 @@ class tvac:
     def Target(self):
         return self._TargetTemperature
 
+    #TODO This needs to be updated to pull the lab ambient
+    @property
+    def Ambient(self):
+        return 20 #degrees C
 
     @Target.setter
     def Target(self, value):
+        #TODO Need to Find ambient Temp Setter
+        if value == "Ambient":
+            value = self.Ambient
         if value > self._UpperLimit:
             logger.warning("Attempt to set temperature too high!")
             return
@@ -246,6 +253,9 @@ class tvac:
         
     @ChillerSet.setter
     def ChillerSet(self, value):
+        #TODO We need to implement an Ambient Temp Finder
+        if value == "Ambient":
+            value = self.Ambient
         if value > self._UpperLimit:
             logger.warning("Attempt to set temperature too high!")
             return

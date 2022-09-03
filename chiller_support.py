@@ -5,7 +5,7 @@ from tvac_logger import logger
 import time
 
 #Definitions for the Upper and lower capibilities of the chiller
-chillerUpperLimit = 25 #Degrees C
+chillerUpperLimit = 20 #Degrees C
 chillerLowerLimit = -30 #Degrees C
 
 class chiller:

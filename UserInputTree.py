@@ -1,3 +1,4 @@
+import configparser
 import TextFileParser
 import os
 
@@ -10,6 +11,20 @@ def GetUserInputFile():
         #Check to see if the input is a valid filepath
         if os.path.isfile(PieceWiseProfile):
             PieceWiseProfile = LoadPieceWiseProfile(PieceWiseProfile)
+            confirmed = None
+            while confirmed is None:
+                PieceWiseProfile.getPlot()
+                confirmed = input("Is the Shown Graph The Expected Profile (y/n): ")
+                if confirmed == "y":
+                    confirmed = True
+                elif confirmed == "n":
+                    confirmed = False
+                    print("Please Fix the Input JSON File and rerun this script")
+                    exit()
+                else:
+                    confirmed = None
+                    print("Invalid Input")
+                
         else:
             PieceWiseProfile = None
             print("Invalid Input")
@@ -133,12 +148,13 @@ def GetUserInputManual():
 
 #load a piecewise profile from a json file using the TextFileParser
 def LoadPieceWiseProfile(FileName):
-    Data = TextFileParser.runReader(FileName)
+    Data = TextFileParser.RunReader(FileName)
     return Data
 
 
 #Branch User Input to GetUserInputManual or GetUserInputFile
 def GetUserInput():
+    print("Getting User Input")
     UseFile = None
     while UseFile == None:
         UseFile = input("Would you like to use a File to input the Temperature Profile? (y/n): ")

@@ -5,7 +5,7 @@
     "ThermalMass": "Small",
     "StartingPoint": "Ambient",
     "EndingPoint": "Ambient",
-    "SetPointTolerance": 0.1,
+    "SetPointTolerance": 0.8,
     "Profiles": [
         {  
         "TempProfileName": "Survival Temps",
@@ -13,13 +13,13 @@
         "Setpoint_Series": [
             {
             "SetPointName": "Survival Upper",
-            "Temp [C]": 50,
-            "Hold [Min]": 120,
+            "Temp [C]": 20,
+            "Hold [Min]": 2,
             "Ramp Rate To Temp [C/Min]": 1
             },{
             "SetPointName": "Survival Lower",
-            "Temp [C]": -40,
-            "Hold [Min]": 120,
+            "Temp [C]": -10,
+            "Hold [Min]": 2,
             "Ramp Rate To Temp [C/Min]":1
             }]
         },{
@@ -28,13 +28,13 @@
         "Setpoint_Series": [
             {
             "SetPointName": "Operating Range Upper",
-            "Temp [C]": 40,
-            "Hold [Min]": 240,
+            "Temp [C]": 10,
+            "Hold [Min]": 2,
             "Ramp Rate To Temp [C/Min]": 1
             },{
             "SetPointName": "Operating Range Lower",
-            "Temp [C]": -30,
-            "Hold [Min]": 240,
+            "Temp [C]": -5,
+            "Hold [Min]": 2,
             "Ramp Rate To Temp [C/Min]":1
             }]
         }

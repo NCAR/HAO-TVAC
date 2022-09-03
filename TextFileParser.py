@@ -44,8 +44,6 @@ class RunReader:
         self.verifyData()
         self.Profiles = []
         self.getProfiles()
-        
-        self.getPlot()
 
     
     #read the parameter in the JSON File and returns it
@@ -180,7 +178,7 @@ class RunReader:
             array.append(startingTemp+((direction)*self.Profiles[x].SetPoints[j].RampRate*k))
         
         if self.EndingPoint == "Ambient":
-            array.append(23)
+            array.append(20)
         else:
             array.append(self.EndingPoint)
             
@@ -201,7 +199,7 @@ class RunReader:
                 ytl = np.append(ytl,f"{self.Profiles[x].SetPoints[j].Name} [{self.Profiles[x].SetPoints[j].Temp}]")
                 ax.axhline(self.Profiles[x].SetPoints[j].Temp, linestyle = '--', linewidth = 1, color = 'gray') 
         if self.StartingPoint == "Ambient":
-            yt=np.append(yt,23)
+            yt=np.append(yt,20)
             ytl = np.append(ytl,"Starting Point [23]")
             ax.axhline(23, linestyle = '--', linewidth = 1, color = 'gray')
         else:
@@ -328,5 +326,5 @@ class SetPoint:
         self.verifyHold()
         self.verifyRampRate()
 
-run = RunReader("Example.json")
+#run = RunReader("Example.json")
 
