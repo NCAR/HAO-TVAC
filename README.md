@@ -78,34 +78,56 @@ Example.JSON
     ]
 }
 ```
+### Creating a JSON File
+#### RunNames
+The Run is the Top-Level Structure and Defines the Thermal Run. Runs Can be composed of Multiple Profiles
 
-In the above Example the RunName is just used to Identify the profile
-The UseChaser is the Parameter that will continue to push the Chiller lower or higher in an attempt to Drive the temperature at the RTD to the correct level.
-The Chaser Algorythm check for three primary stipulations. 
+`RunName` type String, Used to Identify the Profile to the End User
+
+`UseChaser` type boolean, This parameter will push the Chiller lower or higher in an attempt to drive the temperature at the RTD to the correct level.
+The Chaser Algorythm check for three primary stipulations.
+
 --Has the Chiller Reached the Set point
+
 --Has the RTD NOT Reached the Setpoint
+
 --is the RTD's temperature Flat (is it still moving to the setpoint)
+
 If all of the above are true. The Chiller Temperature will lower periodically to get the RTD temperature to move down
 
+`ChosenRTD` type String Must be one of the Following: ["Chiller","Plate1", "Plate2", "Plate4", "Floating RTD"] This sets which RTD we will be tracking.
+
+`ThermalMass` type String Must Be one of the Following ["Small", "Medium", "Large", "XL"]
 The thermal Mass Dictates how aggressively to use the Chasing algorythim. ie if the thermal mass is very small the Chaser will move the Chiller setpoint if the RTD temp has been flat after a short amount of time. If it is XL it will wait a substantially longer time before it starts moving the chiller setpoint. A way to think about this is 'thermal momentum' We want to give the system enough time to react to movements in the temperature
 
-ChosenRTD is which rtd we are tracking
 
-StartingPoint is what temp we should reach before starting the thermal cycle. Currently "Ambient" just sets the Temp to 20C but this should be improved in the Future to be an actual ambient temperature
+`StartingPoint` type float or String "Ambient". What temp we should reach before starting the thermal cycle. Currently "Ambient" just sets the Temp to 20C but this should be improved in the Future to be an actual ambient temperature
 
-EndingPoint is hwere we should end the Temperature
+`EndingPoint` type float or String "Ambient" is where we should end the Thermal Cycle
 
-SetPointTolerance is How close to the Setpoint we should get before we move on ie a SetPointTolerance of 0.8 Would mean that we only need to get with in +/-0.8C to the Setpoint before we consider it "at the Setpoint"
+`SetPointTolerance` type float. How close to the Setpoint we should get before we move on ie a SetPointTolerance of 0.8 Would mean that we only need to get with in +/-0.8C to the Setpoint before we consider it "at the Setpoint"
 
+`Profiles` List a Set of Profiles
 
-Profiles List an array of Profiles
-Each Profile should have a TempProfileName which is just to indicate where we are at
-a Number of Repitition for how many times we want to repeat the profile
-and a list of SetPoints
+#### Profiles
+Profiles are the Mid-level Structure and are composed of Multiple SetPoints
+Each Profile should have the Following Parameters 
 
+`TempProfileName` type String Makes an Identifier for the Profile
 
+`Repititions` type int. The number of times that this profile should be repeated 
+
+`Setpoint_Series` Defines a list of Setpoints to that make up this profile
+
+#### SetPoints
+The SetPoint is the Bottom-Level Structure
 Each SetPoint Should have the Following Parameters
-"SetPointName" A name that will be referenced in the Ideal profile and Runtime
-"Temp [C]": The Temp that the RTD will e brought to
-"Hold [Min]": How long we want to stay at that set point
-"Ramp Rate To Temp [C/Min]": How quickly we want to move to that set point
+
+`SetPointName` type String: A name that will be referenced in the ideal profile and Runtime
+
+`Temp [C]` type float [bound by chiller_support ranges] The Temp that the RTD will be brought to
+
+`Hold [Min]`: type float. How long we want to stay at that set point
+
+`Ramp Rate To Temp [C/Min]`: type float. How quickly we want to move to that set point
+
