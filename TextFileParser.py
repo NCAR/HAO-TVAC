@@ -148,7 +148,7 @@ class RunReader:
                     #if this is the First point we are looking at Start at room temp
                     if j == 0 and i == 0 and x ==0:
                         if self.StartingPoint == "Ambient":
-                            startingTemp = 23
+                            startingTemp = 20
                         else:
                             startingTemp = self.StartingPoint
                             
@@ -200,15 +200,15 @@ class RunReader:
                 ax.axhline(self.Profiles[x].SetPoints[j].Temp, linestyle = '--', linewidth = 1, color = 'gray') 
         if self.StartingPoint == "Ambient":
             yt=np.append(yt,20)
-            ytl = np.append(ytl,"Starting Point [23]")
+            ytl = np.append(ytl,"Starting Point [20]")
             ax.axhline(23, linestyle = '--', linewidth = 1, color = 'gray')
         else:
             yt=np.append(yt,self.StartingPoint)
             ytl = np.append(ytl,f"Starting Point [{self.StartingPoint}]")
             ax.axhline(self.StartingPoint, linestyle = '--', linewidth = 1, color = 'gray')
         if self.EndingPoint == "Ambient":
-            yt=np.append(yt,23)
-            ytl = np.append(ytl,"Ending Point [23]")
+            yt=np.append(yt,20)
+            ytl = np.append(ytl,"Ending Point [20]")
             ax.axhline(23, linestyle = '--', linewidth = 1, color = 'gray')
         else:
             yt=np.append(yt,self.EndingPoint)

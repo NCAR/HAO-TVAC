@@ -3,8 +3,8 @@
     "UseChaser": false,
     "ChosenRTD": "Floating RTD",
     "ThermalMass": "Small",
-    "StartingPoint": -60,
-    "EndingPoint": -60,
+    "StartingPoint": "Ambient",
+    "EndingPoint": "Ambient",
     "SetPointTolerance": 0.8,
     "Profiles": [
         {  
@@ -12,11 +12,17 @@
         "Repititions": 1,
         "Setpoint_Series": [
             {
+            "SetPointName": "Chiller Upper",
+            "Temp [C]": 20,
+            "Hold [Min]": 2,
+            "Ramp Rate To Temp [C/Min]": 5
+            },
+            {
             "SetPointName": "Chiller Lower",
             "Temp [C]": -60,
             "Hold [Min]": 2,
             "Ramp Rate To Temp [C/Min]": 5
-            }]
+                }]
         }
     ]
 }
