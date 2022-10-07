@@ -375,7 +375,7 @@ class tvac:
         if not ((abs(self.Temperature - TargetTemperature) > tolerance) or UseDumbChaser): return
         
         #Get DumbWithIt
-        logger.info(f"Target Sensor {self._TargetTempSensor} has still not reached the Desiserd Temp {TargetTemperature}.\n The Dumb Temp Chaser Will now take over with a max increment of {RampRate}")
+        logger.info(f"Target Sensor {self._TargetTempSensor} has still not reached the Desiserd Temp {TargetTemperature}.\n The Temp Chaser Will now take over with a max increment of {RampRate}")
         ChaserTime = time.time()
         while (abs(self.Temperature - TargetTemperature) > tolerance):
             self.Tick()
