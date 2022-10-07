@@ -21,7 +21,7 @@ except:
 
 #TODO Style: Need to make it so that Temperature readings are all being called from the Function Dictionary
 #TODO Stlye Figure out Who handles data cleaning with the Temperature calls 
-#TODO ENG: Communication or readings from the to Check current pressure in Vacuume
+#TODO ENG: Communication or readings from the to Check current pressure in Vacuum Chamber
 #TODO Style: Implement Error Checking for input TargetSensor ensure its in the Dict
 #TODO Style: Implement Error Checking For WaitForTemperature Routine ie dont allow more than 36 hours etc
 #TODO Gen: More error Checking and reporting
@@ -189,6 +189,7 @@ class tvac:
     #Need More Clarity in who handles what cleaning eg Time delays negative numbers etc
     #Temperature is the Default Function that will be called to check the Temp of the Target Sensor.
     #If new Temp sensors are added to the System they will have {SensorName}Temperature Reading functions here
+    #TODO There is an issue here with the Chiller Temperature. It is not returning the correct value.
     @property
     def _TempDataStream(self):
         _TempDataStream = [item for sublist in self.TemperatureDataStreamDict[self._TargetTempSensor]() for item in sublist]

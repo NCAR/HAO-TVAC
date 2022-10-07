@@ -6,7 +6,7 @@ import time
 
 #Definitions for the Upper and lower capibilities of the chiller
 chillerUpperLimit = 20 #Degrees C
-chillerLowerLimit = -60 #Degrees C
+chillerLowerLimit = -30 #Degrees C
 
 class chiller:
 
