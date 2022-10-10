@@ -1,0 +1,22 @@
+{
+    "RunName": "Characterization Profile 2 Test Chiller Offset",
+    "UseChaser": false,
+    "ChosenRTD": "Floating RTD",
+    "ThermalMass": "Small",
+    "StartingPoint": 20,
+    "EndingPoint": 20,
+    "SetPointTolerance": 1.0,
+    "Profiles": [
+        {  
+        "TempProfileName": "Max Low Chiller Soak",
+        "Repititions": 1,
+        "Setpoint_Series": [
+            {
+            "SetPointName": "Chiller Lower",
+            "Temp [C]": -15,
+            "Hold [Min]": 120,
+            "Ramp Rate To Temp [C/Min]": 5
+            }]
+        }
+    ]
+}
