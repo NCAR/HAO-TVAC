@@ -1,4 +1,5 @@
 import nidaqmx
+import time
 from tvac_logger import logger
 
 from nidaqmx.constants import (
@@ -32,3 +33,11 @@ class rtd:
             return data
         else:
             return data[channel]
+
+
+if __name__ == "__main__":
+    rtds = rtd()
+    while(True):
+        read = rtds.Read()
+        print(f"RTD0{read[3]}\n\rRTD1{read[2]}\n\rRTD2{read[1]}\n\rRTD3{read[0]}")
+        time.sleep(2)

@@ -1,5 +1,5 @@
 {
-    "RunName": "Characterization Profile 2 Test Chiller Offset",
+    "RunName": "Characterization Profile 3 Test New 3L RTDs",
     "UseChaser": false,
     "ChosenRTD": "RTD0",
     "ThermalMass": "Small",
@@ -13,10 +13,16 @@
         "Setpoint_Series": [
             {
             "SetPointName": "Chiller Lower",
-            "Temp [C]": -30,
+            "Temp [C]": -35,
             "Hold [Min]": 120,
             "Ramp Rate To Temp [C/Min]": 5
-            }]
+            },
+            {
+                "SetPointName": "Chiller Upper",
+                "Temp [C]": 20,
+                "Hold [Min]": 120,
+                "Ramp Rate To Temp [C/Min]": 5
+                }]
         }
     ]
 }

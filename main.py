@@ -71,6 +71,10 @@ if __name__ == "__main__":
                     tvac.RampTemperatureTo(TargetTemperature=piecewise.Profiles[i].SetPoints[k].Temp ,RampRate=piecewise.Profiles[i].SetPoints[k].RampRate, tolerance=piecewise.setPointTolerance, UseDumbChaser=piecewise.UseChaser)
                     print("Waiting")
                     tvac.Wait(duration = piecewise.Profiles[i].SetPoints[k].Hold, useDumbChaser=piecewise.UseChaser)
+    
+    tvac.Target = piecewise.EndingPoint
+    print(f"Moving to End Temperature: {tvac.Target}")
+    tvac.WaitForTemperature(useDumbChaser=piecewise.UseChaser)
     print("Done")
                 
         

@@ -69,8 +69,8 @@ class RunReader:
     
     #Verify that ChosenRTD is one of the Expected Values
     def verifyChosenRTD(self):
-        if self.ChosenRTD not in [ "Chiller","Plate1", "Plate2", "Plate4", "Floating RTD"]:
-            print(f"ERROR: ChosenRTD {self.ChosenRTD} is not a valid RTD in {self.FileName}\r\n Expected Values are: Chiller, Plate1, Plate2, Plate4, Floating RTD")
+        if self.ChosenRTD not in [ "Chiller","RTD0", "RTD1", "RTD2", "RTD3"]:
+            print(f"ERROR: ChosenRTD {self.ChosenRTD} is not a valid RTD in {self.FileName}\r\n Expected Values are: Chiller, RTD0, RTD1, RTD2, RTD3")
             exit()
 
     #Verify that ThermalMass is an expected value

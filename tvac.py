@@ -70,10 +70,10 @@ class tvac:
         #This Dictionary Contains Functions to poll the various sensors 
         self.TemperatureFuncDict = {
             'Chiller': self.ChillerTemperature,
-            'Plate1': partial(self.RTDTemperature, 3),
-            'Plate2': partial(self.RTDTemperature, 2),
-            'Plate3': partial(self.RTDTemperature, 1),
-            'Floating RTD': partial(self.RTDTemperature, 0)
+            'RTD0': partial(self.RTDTemperature, 3),
+            'RTD1': partial(self.RTDTemperature, 2),
+            'RTD2': partial(self.RTDTemperature, 1),
+            'RTD3': partial(self.RTDTemperature, 0)
             }
 
                 #Data Streams
@@ -88,10 +88,10 @@ class tvac:
         #partial is used to pass in the function to call and the channel to call it on
         self.TemperatureDataStreamDict = {
             'Chiller': self._DataChillerTemperature,
-            'Plate1': partial(self.Extract,self._DataRTDsTemperature, 3),
-            'Plate2': partial(self.Extract,self._DataRTDsTemperature, 2),
-            'Plate3': partial(self.Extract,self._DataRTDsTemperature, 1),
-            'Floating RTD': partial(self.Extract,self._DataRTDsTemperature, 0)
+            'RTD0': partial(self.Extract,self._DataRTDsTemperature, 3),
+            'RTD1': partial(self.Extract,self._DataRTDsTemperature, 2),
+            'RTD2': partial(self.Extract,self._DataRTDsTemperature, 1),
+            'RTD3': partial(self.Extract,self._DataRTDsTemperature, 0)
             }
         
         
@@ -116,7 +116,7 @@ class tvac:
 
         #Create CSV
         datafile = open(self.CSVFile, mode='w')
-        datafile.write("minutes, ChillerTemp, TargetTemp, PlateTemp1, PlateTemp2, PlateTemp3, FloatTemp, ChillerSetTemp\n")
+        datafile.write("minutes, ChillerTemp, TargetTemp, RTD0Temp, RTD1Temp, RTD2Temp3, RTD3Temp, ChillerSetTemp\n")
         datafile.close()
 
         #Create Plot
@@ -137,10 +137,11 @@ class tvac:
         plt.plot(self._DataTime, self._DataTarget, label="Target Temp")
         plt.plot(self._DataTime, self._DataChillerSetTemp, label="Chiller Set Temp")
         #Todo Choose Which Channels to plot
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 3), label="Plate Temp 1")
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 0), label="Floating RTD Temp")
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 2), label="Plate Temp 2")
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 1), label="Plate Temp 3")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 3), label="RTD0")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 2), label="RTD1")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 1), label="RTD2")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 0), label="RTD3")
+
 
         plt.xlabel("Elapsed Time [m]")
         plt.ylabel("Temperature [C]")
@@ -371,17 +372,18 @@ class tvac:
             self.Target = self.ChillerSet
             self.Tick()
             sys.stdout.write('\n')
-        logger.info(
-            "Chiller= temperature has reached {:.1f}".format(TargetTemperature))
-        if not ((abs(self.Temperature - TargetTemperature) > tolerance) or UseDumbChaser): return
+        logger.info("Chiller temperature has reached {:.1f}".format(TargetTemperature))
+        if (abs(self.Temperature - TargetTemperature) > tolerance):
+             logger.info(f"Target Sensor {self._TargetTempSensor} has still not reached the Desiserd Temp {TargetTemperature}.\n")
+             if not (UseDumbChaser): return #If we are not doing anything to pull the temp down
         
         #Get DumbWithIt
-        logger.info(f"Target Sensor {self._TargetTempSensor} has still not reached the Desiserd Temp {TargetTemperature}.\n The Temp Chaser Will now take over with a max increment of {RampRate}")
+        logger.info(f"The Temp Chaser Will now take over with a max increment of {RampRate}")
         ChaserTime = time.time()
-        while (abs(self.Temperature - TargetTemperature) > tolerance):
+        while (abs(self.Temperature - TargetTemperature) > tolerance): #While we are still a tolerance away from the setpoint Continue
             self.Tick()
-            if time.time() >= ChaserTime + self.ThermalMassWeightDict[self._ThermalMass]:
-                if(self.DumbTempChaser(TargetTemperature, self._TempDataStream, MaxTempIncrement=RampRate) ): ChaserTime = time.time()
+            if time.time() >= ChaserTime + self.ThermalMassWeightDict[self._ThermalMass]: #If we have waited long enough Dependant on the thermal mass
+                if(self.DumbTempChaser(TargetTemperature, self._TempDataStream, MaxTempIncrement=RampRate) ): ChaserTime = time.time() #Check to see if we should pull the tremp on the chiller and update the time
 
     #Check to see if the temps on the given data streem is relativley flat for the last n entries
     def TempFlatish(self, _DataSensorTemp, tolerance = .2, lengthOfCheck = 10):
