@@ -95,7 +95,7 @@ The Chaser Algorythm check for three primary stipulations.
 
 If all of the above are true. The Chiller Temperature will lower periodically to get the RTD temperature to move down
 
-`ChosenRTD` type String Must be one of the Following: ["Chiller","RTD0","RTD1","RTD2","RTD3"] This sets which RTD we will be tracking.
+`ChosenRTD` type String Must be one of the Following: ["Chiller","RTD0","RTD1","RTD2","RTD3","RTD4","RTD5","RTD6"] This sets which RTD we will be tracking.
 
 `ThermalMass` type String Must Be one of the Following ["Small", "Medium", "Large", "XL"]
 The thermal Mass Dictates how aggressively to use the Chasing algorythim. ie if the thermal mass is very small the Chaser will move the Chiller setpoint if the RTD temp has been flat after a short amount of time. If it is XL it will wait a substantially longer time before it starts moving the chiller setpoint. A way to think about this is 'thermal momentum' We want to give the system enough time to react to movements in the temperature
