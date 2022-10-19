@@ -186,7 +186,7 @@ class tvac:
         
         # write to the log file
         datafile = open(self.CSVFile, mode='a')
-        entry = "{:7.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f}\n"
+        entry = "{:7.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f}\n"
         
         datafile.write(entry.format(DataTime, DataChillerTemperature, DataTarget, DataRTDsTemperature[0][0],
                                     DataRTDsTemperature[1][0], DataRTDsTemperature[2][0], DataRTDsTemperature[3][0],
