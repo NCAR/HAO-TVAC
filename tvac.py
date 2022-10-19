@@ -70,10 +70,13 @@ class tvac:
         #This Dictionary Contains Functions to poll the various sensors 
         self.TemperatureFuncDict = {
             'Chiller': self.ChillerTemperature,
-            'RTD0': partial(self.RTDTemperature, 3),
-            'RTD1': partial(self.RTDTemperature, 2),
-            'RTD2': partial(self.RTDTemperature, 1),
-            'RTD3': partial(self.RTDTemperature, 0)
+            'RTD0': partial(self.RTDTemperature, 0),
+            'RTD1': partial(self.RTDTemperature, 1),
+            'RTD2': partial(self.RTDTemperature, 2),
+            'RTD3': partial(self.RTDTemperature, 3),
+            'RTD4': partial(self.RTDTemperature, 4),
+            'RTD5': partial(self.RTDTemperature, 5),
+            'RTD6': partial(self.RTDTemperature, 6)
             }
 
                 #Data Streams
@@ -88,11 +91,14 @@ class tvac:
         #partial is used to pass in the function to call and the channel to call it on
         self.TemperatureDataStreamDict = {
             'Chiller': self._DataChillerTemperature,
-            'RTD0': partial(self.Extract,self._DataRTDsTemperature, 3),
-            'RTD1': partial(self.Extract,self._DataRTDsTemperature, 2),
-            'RTD2': partial(self.Extract,self._DataRTDsTemperature, 1),
-            'RTD3': partial(self.Extract,self._DataRTDsTemperature, 0)
-            }
+            'RTD0': partial(self.Extract,self._DataRTDsTemperature, 0),
+            'RTD1': partial(self.Extract,self._DataRTDsTemperature, 1),
+            'RTD2': partial(self.Extract,self._DataRTDsTemperature, 2),
+            'RTD3': partial(self.Extract,self._DataRTDsTemperature, 3),
+            'RTD4': partial(self.Extract,self._DataRTDsTemperature, 4),
+            'RTD5': partial(self.Extract,self._DataRTDsTemperature, 5),
+            'RTD6': partial(self.Extract,self._DataRTDsTemperature, 6)
+        }
         
         
         
@@ -116,7 +122,7 @@ class tvac:
 
         #Create CSV
         datafile = open(self.CSVFile, mode='w')
-        datafile.write("minutes, ChillerTemp, TargetTemp, RTD0Temp, RTD1Temp, RTD2Temp3, RTD3Temp, ChillerSetTemp\n")
+        datafile.write("minutes, ChillerTemp, TargetTemp, RTD0Temp, RTD1Temp, RTD2Temp, RTD3Temp, RTD4Temp, RTD5Temp, RTD6Temp, ChillerSetTemp\n")
         datafile.close()
 
         #Create Plot
@@ -137,10 +143,13 @@ class tvac:
         plt.plot(self._DataTime, self._DataTarget, label="Target Temp")
         plt.plot(self._DataTime, self._DataChillerSetTemp, label="Chiller Set Temp")
         #Todo Choose Which Channels to plot
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 3), label="RTD0")
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 2), label="RTD1")
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 1), label="RTD2")
-        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 0), label="RTD3")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 0), label="RTD0")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 1), label="RTD1")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 2), label="RTD2")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 3), label="RTD3")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 4), label="RTD4")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 5), label="RTD5")
+        plt.plot(self._DataTime, self.Extract(self._DataRTDsTemperature, 6), label="RTD6")
 
 
         plt.xlabel("Elapsed Time [m]")
@@ -179,8 +188,10 @@ class tvac:
         datafile = open(self.CSVFile, mode='a')
         entry = "{:7.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f},{:5.1f}\n"
         
-        datafile.write(entry.format(DataTime, DataChillerTemperature, DataTarget, DataRTDsTemperature[3][0],
-                                    DataRTDsTemperature[2][0],DataRTDsTemperature[1][0],DataRTDsTemperature[0][0],DataChillerSetTemp))
+        datafile.write(entry.format(DataTime, DataChillerTemperature, DataTarget, DataRTDsTemperature[0][0],
+                                    DataRTDsTemperature[1][0], DataRTDsTemperature[2][0], DataRTDsTemperature[3][0],
+                                    DataRTDsTemperature[4][0], DataRTDsTemperature[5][0], DataRTDsTemperature[6][0], 
+                                    DataChillerSetTemp))
         datafile.close()
         
         self.PlotData()

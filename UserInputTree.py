@@ -43,7 +43,7 @@ def GetUserInputManual():
     Repetitions = None
     UseChaser = None
     UseExtendedOptions = None
-    ChosenRTD = "Floating RTD"
+    ChosenRTD = "RTD0"
     UseChaser = False
     SetPointTolerance = 0.1
     ThermalMass = "Small"
@@ -94,21 +94,27 @@ def GetUserInputManual():
         
         #Set the Desired RTD for Temperature Setpoint
         while (ChosenRTD == None):
-            x = input("Which RTD would you like to use to base Measurents off of? [suggested: Floating RTD]\n\r(0) Internal Chiller Sensor\n\r(1) Plate RTD1\n\r(2) Plate RTD2\n\r(3) Plate RTD 3\n\r(4) Floating RTD\n\r")
+            x = input("Which RTD would you like to use to base Measurents off of? [suggested: RTD0]\n\r(0) RTD0\n\r(1) RTD1\n\r(2) RTD2\n\r(3) RTD3\n\r(4) RTD4\n\r\n\r(5) RTD5\n\r(6) RTD6\r\n(7) Internal Chiller Sensor")
             try: 
                 IntRTD = int(x)
             except:
                 pass
             if IntRTD == 0:
-                ChosenRTD = 'Chiller'
+                ChosenRTD = 'RTD0'
             elif IntRTD == 1:
-                ChosenRTD = 'Plate1'
+                ChosenRTD = 'RTD1'
             elif IntRTD == 2:
-                ChosenRTD = 'Plate2'
+                ChosenRTD = 'RTD2'
             elif IntRTD == 3:
-                ChosenRTD = 'Plate3'
+                ChosenRTD = 'RTD3'
             elif IntRTD == 4:
-                ChosenRTD = 'Floating RTD'
+                ChosenRTD = 'RTD4'
+            elif IntRTD == 5:
+                ChosenRTD = 'RTD5'
+            elif IntRTD == 6:
+                ChosenRTD = 'RTD6'
+            elif IntRTD == 7:
+                ChosenRTD == 'Chiller'
                            
         while (UseChaser == None):
             x = input("Keep lowering or raising the Chiller until the RTD Reaches Setpoint?\n\r(0) no\n\r(1) yes\n")
