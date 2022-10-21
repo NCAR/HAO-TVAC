@@ -1,0 +1,28 @@
+{
+    "RunName": "Characterization Profile Test the 4x4x4 Cube",
+    "UseChaser": false,
+    "ChosenRTD": "RTD0",
+    "ThermalMass": "Small",
+    "StartingPoint": 20,
+    "EndingPoint": 20,
+    "SetPointTolerance": 1.0,
+    "Profiles": [
+        {  
+        "TempProfileName": "Max Low Chiller Soak",
+        "Repititions": 1,
+        "Setpoint_Series": [
+            {
+            "SetPointName": "Chiller Lower",
+            "Temp [C]": -35,
+            "Hold [Min]": 300,
+            "Ramp Rate To Temp [C/Min]": 5
+            },
+            {
+                "SetPointName": "Chiller Upper",
+                "Temp [C]": 20,
+                "Hold [Min]": 300,
+                "Ramp Rate To Temp [C/Min]": 5
+                }]
+        }
+    ]
+}
