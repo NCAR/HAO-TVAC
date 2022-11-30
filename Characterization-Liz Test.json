@@ -1,0 +1,28 @@
+{
+    "RunName": "Liz Test Profile",
+    "UseChaser": true,
+    "ChosenRTD": "RTD0",
+    "ThermalMass": "Small",
+    "StartingPoint": 20,
+    "EndingPoint": 20,
+    "SetPointTolerance": 1.0,
+    "Profiles": [
+        {  
+        "TempProfileName": "Temp Cycle Test",
+        "Repititions": 5,
+        "Setpoint_Series": [
+            {
+            "SetPointName": "Chiller Lower",
+            "Temp [C]": -10,
+            "Hold [Min]": 60,
+            "Ramp Rate To Temp [C/Min]": 1
+            },
+            {
+                "SetPointName": "Chiller Upper",
+                "Temp [C]": 20,
+                "Hold [Min]": 60,
+                "Ramp Rate To Temp [C/Min]": 2
+                }]
+        }
+    ]
+}
