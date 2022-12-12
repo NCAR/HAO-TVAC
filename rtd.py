@@ -45,7 +45,15 @@ class rtd:
 
 if __name__ == "__main__":
     rtds = rtd()
+    print(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6")
+    #Request Data Interval from user
+    read_interval = int(input("Enter the Read Interval in Seconds: "))
+
     while(True):
         read = rtds.Read()
-        print(f"RTD0{read[0]}\n\rRTD1{read[1]}\n\rRTD2{read[2]}\n\rRTD3{read[3]}\n\rRTD4{read[4]}\n\rRTD5{read[5]}\n\rRTD6{read[6]}")
-        time.sleep(2)
+        #Get Current Date time
+        time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        #Print the data
+        print(f"{time_stamp}\t{read[0]:.2f}\t{read[1]:.2f}\t{read[2]:.2f}\t{read[3]:.2f}\t{read[4]:.2f}\t{read[5]:.2f}\t{read[6]:.2f}")
+        time.sleep(read_interval)
+        
