@@ -45,10 +45,8 @@ class rtd:
 
 if __name__ == "__main__":
     rtds = rtd()
-    print(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6")
-    #Request Data Interval from user
     read_interval = int(input("Enter the Read Interval in Seconds: "))
-
+    print(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6")
     while(True):
         read = rtds.Read()
         #Get Current Date time
