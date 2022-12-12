@@ -10,5 +10,6 @@ from nidaqmx.constants import (
 
 task = nidaqmx.Task()
 task.do_channels.add_do_chan("NI-6002/port2/line0:0", name_to_assign_to_lines="Chiller Enable")
-task.write([1])
+task.write(True)
+task.write(False)
 
