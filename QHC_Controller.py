@@ -28,9 +28,11 @@ class QHC_Controller:
     
     def Check_KP_Good(self, channel, temp=None):
         if self.limit_duty_cycle:
+            if self.Channels[channel-1].temp_current is None:
+                return
             if temp is None:
                 temp = self.Channels[channel-1].temp_target.strip('C')
-                if temp == "error":
+                if temp == "error" or temp is None:
                     return
                 else:
                     temp = float(temp)
@@ -82,19 +84,19 @@ class QHC_Controller:
     #Send a Command to the Controller
     def Send_Command(self, command):
         self.ser.write(f"{command}\n".encode())
+    
         time.sleep(0.5)
-        return self.ser.read_all().decode('utf-8')
+        data = self.ser.read_all().decode('utf-8')
+        print(data)
+        return data
 
  #read in the Raw data and place it into a pandas table
     def Read_Raw(self):
         #Header on the First row
         #remove all threpeated spaces from the string
-        try:
-            StringData = StringIO(self.Get_RAW().strip())
-            self.raw_data_table = pd.read_csv(StringData, sep=" ", header=0, skipinitialspace=True, index_col=0)
-        except:
-            print("Error: Unable to read Raw Data")
-            return
+        StringData = StringIO(self.Get_RAW().strip().replace("Config failed", "Failed"))
+        self.raw_data_table = pd.read_csv(StringData, sep=" ", header=0, skipinitialspace=True, index_col=0)
+    
        # self.raw_data_table = self.raw_data_table.loc[:, ~self.raw_data_table.columns.str.contains('^Unnamed')]
         #dropna(axis=1, how='all')
         
@@ -176,10 +178,10 @@ if __name__ == "__main__":
     controller = QHC_Controller(port)
     controller.Update_Channels()
     #Set the Temperature Target
-    controller.Set_KP(1, 1)
-    controller.Set_Temp(1, 30)
-    controller.Set_enable(1, True)
-    controller.Set_Temp(2, 45)
+    controller.Set_KP(2, 1)
+    controller.Set_Temp(2, 30)
+    controller.Set_enable(2, True)
+    #controller.Set_Temp(2, 45)
     #ask the user to enter the data cadence in seconds
     read_interval = int(input("Enter the Read Interval in Seconds: "))
     #ask if the user wants to output to a text file
