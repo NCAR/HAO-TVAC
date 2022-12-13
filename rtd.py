@@ -46,12 +46,25 @@ class rtd:
 if __name__ == "__main__":
     rtds = rtd()
     read_interval = int(input("Enter the Read Interval in Seconds: "))
+    #Ask if user want to output information to a text file
+    output_file = input("Do you want to output the data to a text file? (Y/N): ")
+    if output_file == "Y" or output_file == "y":
+        #Get the file name
+        file_name = input("Enter the file name: ")
+        #Open the file
+        file = open(file_name, "w")
+        #Write the header
+        file.write(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6")
+
     print(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6")
     while(True):
         read = rtds.Read()
         #Get Current Date time
         time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         #Print the data
-        print(f"{time_stamp}\t{read[0][0]:.2f}\t{read[1][0]:.2f}\t{read[2][0]:.2f}\t{read[3][0]:.2f}\t{read[4][0]:.2f}\t{read[5][0]:.2f}\t{read[6][0]:.2f}")
+        data = f"{time_stamp}\t{read[0][0]:.2f}\t{read[1][0]:.2f}\t{read[2][0]:.2f}\t{read[3][0]:.2f}\t{read[4][0]:.2f}\t{read[5][0]:.2f}\t{read[6][0]:.2f}"
+        if output_file == "Y" or output_file == "y":
+            file.write(data)
+        print(data)
         time.sleep(read_interval)
         
