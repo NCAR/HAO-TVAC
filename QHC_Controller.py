@@ -210,7 +210,11 @@ class QHC_Channel:
 
 if __name__ == "__main__":
     port = input("Enter the Port: ")
-    controller = QHC_Controller(port)
+    try:
+        controller = QHC_Controller(port)
+    except:
+        print(f"Could not Connect to QHC Controller on {port}\r\nPlease Check connections and try again")
+        exit()
     #Request user input for which channel to use
     channel = int(input("Enter the Channel [1,2,3,4]: "))
     #Request user to input a Set Temp for the Channel
@@ -226,9 +230,9 @@ if __name__ == "__main__":
     
     controller.Update_Channels()
     #Set the Temperature Target
-    controller.Set_KP(2, 1)
-    controller.Set_Temp(2, 30)
-    controller.Set_enable(2, True)
+    
+    controller.Set_Temp(channel, temp)
+    controller.Set_Enable(channel, True)
     #controller.Set_Temp(2, 45)
     #ask the user to enter the data cadence in seconds
     read_interval = int(input("Enter the Read Interval in Seconds: "))

@@ -63,7 +63,7 @@ if __name__ == "__main__":
         #Get Current Date time
         time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         #Print the data
-        data = f"{time_stamp}\t{read[0][0]:.2f}\t{read[1][0]:.2f}\t{read[2][0]:.2f}\t{read[3][0]:.2f}\t{read[4][0]:.2f}\t{read[5][0]:.2f}\t{read[6][0]:.2f}\r\n"
+        data = f"{time_stamp}\t{read[0][0]:.2f}\t{read[1][0]:.2f}\t{read[2][0]:.2f}\t{read[3][0]:.2f}\t{read[4][0]:.2f}\t{read[5][0]:.2f}\t{read[6][0]:.2f}"
         if output_file == "Y" or output_file == "y":
             file = open(file_name, "a")
             file.write(data)
