@@ -25,7 +25,7 @@ class QHC_Controller:
     def Get_RAW(self):
         command = "RAW"
         return self.Send_Command(command)
-    
+    #Todo This will lower the kp value but we should also increase the kp to the allowed limit as we approach the Target Temp
     def Check_KP_Good(self, channel, temp=None):
         if self.limit_duty_cycle:
             if self.Channels[channel-1].temp_current is None:
@@ -36,10 +36,10 @@ class QHC_Controller:
                     return
                 else:
                     temp = float(temp)
-                if (temp - float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp) > self.max_duty_cycle:
-                    kp = self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C')))
-                    print(f"Warning: The KP value for channel {channel} is too high. Setting KP to {kp}")
-                    self.Set_KP(channel, kp)
+            if (temp - float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp) != self.max_duty_cycle:
+                kp = self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C')))
+                print(f"Warning: The KP value for channel {channel} is has changed. Setting KP to {kp}")
+                self.Set_KP(channel, kp)
 
     def Set_Temp(self, channel, temp):
         self.Check_KP_Good(channel, temp)
@@ -157,6 +157,7 @@ class QHC_Channel:
         self.frequency = None
         self.enabled = None
         self.sensor_status = None
+        self.user_requested_kp = None
 
     def __str__(self):
         #print all fields tab separated
