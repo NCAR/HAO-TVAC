@@ -36,11 +36,10 @@ class QHC_Controller:
                     return
                 else:
                     temp = float(temp)
-            print(f"Error in temp is {temp - float(self.Channels[channel-1].temp_current.strip('C'))}")
-            if (temp - float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp) > self.max_duty_cycle:
-                kp = self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C')))
-                print(f"Warning: The KP value for channel {channel} is too high. Setting KP to {kp}")
-                self.Set_KP(channel, kp)
+                if (temp - float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp) > self.max_duty_cycle:
+                    kp = self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C')))
+                    print(f"Warning: The KP value for channel {channel} is too high. Setting KP to {kp}")
+                    self.Set_KP(channel, kp)
 
     def Set_Temp(self, channel, temp):
         self.Check_KP_Good(channel, temp)
@@ -87,7 +86,6 @@ class QHC_Controller:
     
         time.sleep(0.5)
         data = self.ser.read_all().decode('utf-8')
-        print(data)
         return data
 
  #read in the Raw data and place it into a pandas table
@@ -204,7 +202,9 @@ if __name__ == "__main__":
             data = f"{time_stamp}\t{channel}"
             if output == "y" or output == "Y":
                 #write the data
+                file = open(filename, "a")
                 file.write(f"{data}\n")
+                file.close()
             print(data)
             #write a new line
         time.sleep(read_interval)

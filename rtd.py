@@ -55,6 +55,7 @@ if __name__ == "__main__":
         file = open(file_name, "w")
         #Write the header
         file.write(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6\r\n")
+        file.close()
 
     print(f"Time\tRTD0\tRTD1\tRTD2\tRTD3\tRTD4\tRTD5\tRTD6")
     while(True):
@@ -64,7 +65,9 @@ if __name__ == "__main__":
         #Print the data
         data = f"{time_stamp}\t{read[0][0]:.2f}\t{read[1][0]:.2f}\t{read[2][0]:.2f}\t{read[3][0]:.2f}\t{read[4][0]:.2f}\t{read[5][0]:.2f}\t{read[6][0]:.2f}\r\n"
         if output_file == "Y" or output_file == "y":
+            file = open(file_name, "a")
             file.write(data)
+            file.close()
         print(data)
         time.sleep(read_interval)
         
