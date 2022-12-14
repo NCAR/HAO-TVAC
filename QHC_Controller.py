@@ -49,9 +49,11 @@ class QHC_Controller:
                     temp = float(temp)
 
             #Check to see if the KP value will work currently
-            if (temp - float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp) != self.max_duty_cycle:
+            if (temp - "{:.2f}".format(float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp)) != "{:.2f}".format(self.max_duty_cycle):
                 #Set the New Value so that the duty cycle is the max
                 kp = self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C')))
+                #format KP to 2 decimal places
+                kp = "{:.2f}".format(kp)
                 print(f"Warning: The KP value for channel {channel} is has changed. Setting KP to {kp} to maintain a duty cycle of {self.max_duty_cycle}")
                 self.Set_KP(channel, kp)
 
