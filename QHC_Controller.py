@@ -3,6 +3,9 @@ import time
 import sys
 import pandas as pd
 from io import StringIO
+#TODO -- Set Limits on Duty Cycle. Figure out why system is freezing [ZCrossing issue or Comm issue]
+#Set Checks to not let user go over 15% Duty Cycle
+#Auto Exit the Serial port Communication When task is closed
 
 class QHC_Controller:
 
@@ -49,9 +52,11 @@ class QHC_Controller:
                     temp = float(temp)
 
             #Check to see if value will work currently only compare to the 2 decimal places
-            if (temp - format(float(self.Channels[channel-1].temp_current.strip('C')))*float(self.Channels[channel-1].kp), ".2g") != format(self.max_duty_cycle, ".2g"):        
+          
+            
+            if round(temp - float(self.Channels[channel-1].temp_current.strip('C'))*float(self.Channels[channel-1].kp), 2) != round(self.max_duty_cycle, 2):        
                 #Set the New Value so that the duty cycle is the max
-                kp = format(self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C'))), ".2g")
+                kp = round(self.max_duty_cycle/(temp - float(self.Channels[channel-1].temp_current.strip('C'))), 2)
                 #format KP to 2 decimal places
                 print(f"Warning: The KP value for channel {channel} is has changed. Setting KP to {kp} to maintain a duty cycle of {self.max_duty_cycle}")
                 self.Set_KP(channel, kp)
