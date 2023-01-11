@@ -17,13 +17,21 @@ class QHC_Controller:
         self.raw_data_table = None
         self.Channels = [QHC_Channel(1, "Channel1"), QHC_Channel(2, "Channel2"), QHC_Channel(3, "Channel3"), QHC_Channel(4, "Channel4")]
         self.limit_duty_cycle = True
-        self.max_duty_cycle = 0.3
+        self.max_duty_cycle = 0.2
+        self.Upper_limit_duty_cycle = 0.2
 
 
     def __del__(self):
         self.ser.close()
 
-    
+    #Set the max duty cycle
+    def Set_Max_Duty_Cycle(self, duty_cycle):
+        #check is the duty cycle is within the limits
+        if duty_cycle > self.Upper_limit_duty_cycle:
+            print(f"Error: Duty Cycle is too high. Max Duty Cycle is {self.Upper_limit_duty_cycle}")
+            return
+        self.max_duty_cycle = duty_cycle
+
     #Prints out all the information that the Controller has
     def Get_RAW(self):
         command = "RAW"
@@ -153,7 +161,7 @@ class QHC_Controller:
             self.Read_Raw()
         
             for Channel in self.Channels:
-                
+                Channel.clear_info()
                 Channel.kp = self.raw_data_table.loc[f"C{Channel.channel}", "kp"]
                 Channel.kd = self.raw_data_table.loc[f"C{Channel.channel}", "kd"]
                 Channel.ki = self.raw_data_table.loc[f"C{Channel.channel}", "ki"]
@@ -178,6 +186,9 @@ class QHC_Controller:
     #Print the information header in tsv format
     def info_header(self):
         return "Channel\tName\tkp\tkd\tki\tep\ted\tei\teffort\tcurr\ttemp_current\ttemp_average\ttemp_target\ti2c_address\thistery_length\tfrequency\tenabled\tsensor_status"
+    
+    #This is to make sure that the output that we are requesting is not stale
+
 
 class QHC_Channel:
     def __init__(self, channel, name):
@@ -208,6 +219,24 @@ class QHC_Channel:
     @property
     def duty_Cyle(self):
         return self.kp*self.ep
+
+    def clear_info(self):
+        self.kp = None
+        self.kd = None
+        self.ki = None
+        self.ep = None
+        self.ed = None
+        self.ei = None
+        self.effort = None
+        self.curr = None
+        self.temp_current = None
+        self.temp_average = None
+        self.temp_target = None
+        self.i2c_address = None
+        self.histery_length = None
+        self.frequency = None
+        self.enabled = None
+        self.sensor_status = None
 
     
 
