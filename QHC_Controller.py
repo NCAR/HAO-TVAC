@@ -19,6 +19,8 @@ class QHC_Controller:
         self.limit_duty_cycle = True
         self.max_duty_cycle = 0.2
         self.Upper_limit_duty_cycle = 0.2
+        #Indicates if the QHC is frozen
+        self.frozen = False
 
 
     def __del__(self):
@@ -69,7 +71,35 @@ class QHC_Controller:
                 print(f"Warning: The KP value for channel {channel} is has changed. Setting KP to {kp} to maintain a duty cycle of {self.max_duty_cycle}")
                 self.Set_KP(channel, kp)
 
-    
+    #Check if frozen
+    def Check_Frozen(self):
+        #see if a newly requested read is identical to the last read
+        #If so we are frozen
+        
+        #Check for fres data three times before we declate frozen
+        stale_count = 0
+        for i in range(3):
+            stale_data = self.raw_data_table
+            self.raw_data_table = self.Read_RAW()
+            if self.raw_data_table.equals(stale_data):
+                stale_count += 1
+                time.sleep(0.5)
+            else:
+                break
+
+        if stale_count == 3:
+            self.frozen = True
+            print("Warning: QHC Controller is frozen. Check the connection and try again")
+        else:
+            self.frozen = False
+
+        
+
+        if self.raw_data_table.equals(stale_data):
+            self.frozen = True
+        else:
+            self.frozen = False
+        return
     #Select a Channel
     def Select_Channel(self, channel):
         command = f"C{channel}"
@@ -158,6 +188,7 @@ class QHC_Controller:
     #reads the Raw output and parses it into QHC_Channel objects
     def Update_Channels(self):
         try:
+            self.Check_Frozen()
             self.Read_Raw()
         
             for Channel in self.Channels:
